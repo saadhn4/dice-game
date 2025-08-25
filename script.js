@@ -15,15 +15,16 @@
  */
 
 //  Selecting DOM elements
-
 const rollDiceEl = document.querySelector(".roll-dice-btn");
 const newGameBtnEl = document.querySelector(".new-game-btn");
 const msgEl = document.querySelector(".js-msg");
 
+// Initial values
 let scores = [0, 0];
 let activePlayer = 0;
 let playing = true;
 
+// Generates a number between 1-6
 function generateDiceValue() {
   return Math.trunc(Math.random() * 6) + 1;
 }
@@ -36,6 +37,9 @@ rollDiceEl.addEventListener("click", () => {
     document.querySelector(`.player-${activePlayer}-score`).textContent =
       scores[activePlayer];
     // Check for winning condition; true -> stop game ; false-> switch player
+    // As long as the active player's score is 20 or below, the player will keep switching
+    // Once its >= 20, we set the playing variable to false, and put it in a big if statement
+    // This way the dice cannot be rolled once a player hits 20 points
     if (scores[activePlayer] >= 20) {
       document
         .querySelector(`.player-${activePlayer}`)
@@ -59,6 +63,7 @@ rollDiceEl.addEventListener("click", () => {
   }
 });
 
+// Reset to initial values
 newGameBtnEl.addEventListener("click", () => {
   scores = [0, 0];
   document.querySelector(`.player-0-score`).textContent = 0;
@@ -68,4 +73,6 @@ newGameBtnEl.addEventListener("click", () => {
   document.querySelector(`.player-1`).classList.remove("player-winner");
   document.querySelector(`.player-0`).classList.remove("player-winner");
   msgEl.textContent = "Click on Roll Dice !";
+  // Set playing to true, so game's logic works again
+  playing = true;
 });
